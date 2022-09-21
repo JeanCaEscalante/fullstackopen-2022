@@ -6,15 +6,20 @@ const Form = (props) => {
   const {AddPerson,newName,handleNameChange,newNumber,handleNumberChange} = props
   return (
     <>
-      <form onSubmit={AddPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange}/>
+      <form className='form' onSubmit={AddPerson}>
+        <div  className="group">
+            <input placeholder="Name" className="input" value={newName} onChange={handleNameChange}/> 
+        </div>
+        <div className="group">
+            <input placeholder="Numbers" className="input" value={newNumber} onChange={handleNumberChange}/> 
         </div>
         <div>
-          Numbers: <input value={newNumber} onChange={handleNumberChange}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
+          <button type="submit" className="learn-more">
+            <span className="circle" aria-hidden="true">
+            <span className="icon arrow"></span>
+            </span>
+            <span className="button-text">Add</span>
+          </button>
         </div>
       </form>
     </>

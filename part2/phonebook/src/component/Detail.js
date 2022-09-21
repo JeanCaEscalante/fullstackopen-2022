@@ -3,8 +3,8 @@ import React from 'react'
 const Detail = (props) => {
 
   return (
-    <div>
-      <h2>View Detail</h2>
+    <div className='column detail card'>
+      <h3>View Detail</h3>
       <p>Nombre:  {props.name}</p>
       <p>Number: {props.number}</p>
     </div>

@@ -4,13 +4,13 @@ const Notification = ({ notification }) => {
     switch (notification.name) {
       case 'error':
         return (
-          <div className='error'>
+          <div className='alert alert-danger'>
             {notification.message}
           </div>
         )
       case 'sucess':
         return (
-          <div className='sucess'>
+          <div className='alert alert-success'>
             {notification.message}
           </div>
         )

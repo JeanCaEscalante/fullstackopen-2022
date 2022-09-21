@@ -38,8 +38,8 @@ const App = () => {
       event.preventDefault();
       
       const newPerson = {
-        name:newName,
-        number:newNumber
+        name1:newName,
+        number1:newNumber
       }
 
       let notify = {
@@ -47,16 +47,30 @@ const App = () => {
         message:''
       }
 
-      const person = persons.filter((person) => person.name === newPerson.name)
+      const person = persons.filter((person) => person.name === newPerson.name1)
 
       if(person.length === 1){
 
         if (window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
-          
-          PhoneBook.update(person[0]['id'],newPerson).then((response) => {
-               setPersons(persons.map((current) => (current.id !== person[0]['id']) ? current : response))
+          const newPerson = {
+            id: person[0]['id'],
+            name:person[0]['name'],
+            number:newNumber
+          }
+    
+          PhoneBook.update(person[0]['id'],{number1: newNumber}).then((response) => {
+              
+              if('error' in response){
+                setNotify({name:'error',message:response.error})
+              }
+              else{
+               setPersons(persons.map((current) => (current.number !== person[0]['number']) 
+                                                  ? current 
+                                                  : { name:person[0]['name'],number:newNumber,id: person[0]['id']}))
                notify.message =`update ${newPerson.name}`
                setNotify(notify)
+
+              }
               
           }).catch(error => {
 
@@ -67,27 +81,27 @@ const App = () => {
         
         
       }else{
-        
-      
 
         PhoneBook.create(newPerson).then((response) =>  {
-          
+          if('id' in response){
             setPersons(persons.concat(response))
-            notify.message = `added ${response.name}`
-            setNotify(notify)
-            
-      })
-       
+            setNotify({
+              name:'sucess',
+              message:`added ${response.name}`
+            })
+          }else{
+            setNotify({name:'error',message:response.error})
+          }
+        })
         setNewName('');
         setNewNumber('');
-      }
-      
-  }
+       }
+    }
 
   const viewPerson = (event) => {
       let fila = event.target.parentNode.parentNode;
-      setName(fila.children[0].innerHTML)
-      setNumber(fila.children[1].innerHTML)
+      setName(fila.parentNode.children[0].innerHTML)
+      setNumber(fila.parentNode.children[1].innerHTML)
   }
 
   const removePerson = (person) => () => {
@@ -122,15 +136,25 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <header>
+        <h2>Phonebook</h2>
+      </header>
       <Notification notification={notify} />
-        <FilterPhone filter={filter}  handleFilterChange={handleFilterChange}/>
-
-      <PersonForm AddPerson={AddPerson}  newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
-      <h2>Numbers</h2>
-      <ListPhone phoneToShow={phoneToShow} viewPerson={viewPerson} removePerson={removePerson}/>
-
-      <Detail name={name} number={number}/>
+      
+      <div className='container'>
+        <section className='column'>
+          <h2>Registration Number</h2>
+          <PersonForm AddPerson={AddPerson}  newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
+        </section>
+        <section className='column'>
+          <h2>Numbers</h2>
+          <div className='container'>
+            <FilterPhone filter={filter}  handleFilterChange={handleFilterChange}/>
+            <Detail name={name} number={number}/>
+          </div>
+          <ListPhone phoneToShow={phoneToShow} viewPerson={viewPerson} removePerson={removePerson}/>
+        </section>
+      </div>
     </div>
   )
 }
