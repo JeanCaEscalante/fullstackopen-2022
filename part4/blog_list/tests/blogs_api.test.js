@@ -1,64 +1,33 @@
 const mongoose = require('mongoose')
+const helper = require('./test_helper')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const Blogs = require('../models/blog')
 const logger = require('../utils/logger')
 
-const initialBlogs = [
-  {
-    title: "React patterns",
-    author: "Michael Chan",
-    url: "https://reactpatterns.com/",
-    likes: 7,
-  },
-  {
-    title: "Go To Statement Considered Harmful",
-    author: "Edsger W. Dijkstra",
-    url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-    likes: 5,
-  },
-  {
-    title: "Canonical string reduction",
-    author: "Edsger W. Dijkstra",
-    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-    likes: 12,
-  },
-  {
-    title: "First class tests",
-    author: "Robert C. Martin",
-    url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-    likes: 10,
-  },
-  {
-    title: "TDD harms architecture",
-    author: "Robert C. Martin",
-    url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
-    likes: 0,
-  },
-  {
-    title: "Type wars",
-    author: "Robert C. Martin",
-    url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
-    likes: 2,
-  }  
-]
+
 let {update, remove} = 0;
 beforeEach(async () => {
   await Blogs.deleteMany({})
-  let blogObject = new Blogs(initialBlogs[0])
+  let blogObject = new Blogs(helper.initialBlogs[0])
 update = await blogObject.save()
-  blogObject = new Blogs(initialBlogs[1])
+  blogObject = new Blogs(helper.initialBlogs[1])
 remove =  await blogObject.save()
-  blogObject = new Blogs(initialBlogs[2])
+  blogObject = new Blogs(helper.initialBlogs[2])
   await blogObject.save()
-  blogObject = new Blogs(initialBlogs[3])
+  blogObject = new Blogs(helper.initialBlogs[3])
   await blogObject.save()
-  blogObject = new Blogs(initialBlogs[4])
+  blogObject = new Blogs(helper.initialBlogs[4])
   await blogObject.save()
-  blogObject = new Blogs(initialBlogs[5])
+  blogObject = new Blogs(helper.initialBlogs[5])
   await blogObject.save()
 })
+
+const user = {
+  "username":"root",
+  "password": "sekret"
+}
 
 test('blogs are returned as json', async () => {
   await api
@@ -67,11 +36,11 @@ test('blogs are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-test('num blogs are returned', async () => {
+test('all blogs are returned', async () => {
  let numBlogs = await api
-    .get('/api/blogs/info')
-    
-    expect(numBlogs.body).toEqual({cantidad: initialBlogs.length})
+    .get('/api/blogs')
+
+    expect(numBlogs.body).toHaveLength(helper.initialBlogs.length)
 })
 
   
@@ -91,32 +60,45 @@ test('a valid blogs can be added', async () => {
     title1: "Teoria de Cuerdas",
     author1: "Albert H. A.",
     url1: "https://www.npmjs.com/package/cors",
-    likes1: 4
+    likes1: 4, 
+    user:"6331979186d6b1b18f9c74f2"
    }
   
+  const login =  await api
+  .post('/api/login')
+  .send(user)
+  .expect(200)
+  .expect('Content-Type', /application\/json/)
+
 
 let result =  await api
     .post('/api/blogs')
+    .set('Authorization', `bearer ${login.body.token}`)
     .send(newBlog)
     .expect(200)
     .expect('Content-Type', /application\/json/)
 
-  const response = await api.get('/api/blogs')
+    
+ 
+  const blogs = await api.get('/api/blogs')
+  const response = await api.get(`/api/blogs/${result.body.id}`)
 
-  expect(response.body).toHaveLength(initialBlogs.length + 1)
+  expect(blogs.body).toHaveLength(helper.initialBlogs.length + 1)
 
-  expect(response.body.slice(-1).pop()).toEqual({
+  expect(response.body).toEqual({
     id:result.body.id,
     title: result.body.title,
     author:result.body.author,
     url: result.body.url,
-    likes: result.body.likes
+    likes: result.body.likes,
+    user: result.body.user
    }); 
 })
 
 
 describe('the name, url, likes is empty or undefined', () => {
 
+  
   test('Yes, likes is undefinied the value default is 0', async () => {
 
     const newBlog =  {
@@ -125,9 +107,17 @@ describe('the name, url, likes is empty or undefined', () => {
       url1: "https://www.npmjs.com/package/cors",
       likes1: undefined
      }
+
+     const login =  await api
+     .post('/api/login')
+     .send(user)
+     .expect(200)
+     .expect('Content-Type', /application\/json/)
+   
     
   let result =  await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${login.body.token}`)
       .send(newBlog)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -144,9 +134,17 @@ describe('the name, url, likes is empty or undefined', () => {
       url1: "https://www.npmjs.com/package/cors",
       likes1: 4
      }
+
+     const login =  await api
+     .post('/api/login')
+     .send(user)
+     .expect(200)
+     .expect('Content-Type', /application\/json/)
+   
     
  let result = await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${login.body.token}`)
       .send(newBlog)
       .expect(400)
 
@@ -162,9 +160,17 @@ test('is url emty', async () => {
       url1: "",
       likes1: "1"
      }
+
+     const login =  await api
+     .post('/api/login')
+     .send(user)
+     .expect(200)
+     .expect('Content-Type', /application\/json/)
+   
     
   let result = await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${login.body.token}`)
       .send(newBlog)
       .expect(400)
       
@@ -177,9 +183,17 @@ test('is url emty', async () => {
 describe('the malformatted id', () => {
   
 test('delete', async () => {
+
+  const login =  await api
+  .post('/api/login')
+  .send(user)
+  .expect(200)
+  .expect('Content-Type', /application\/json/)
+
     
   let result = await api
       .delete('/api/blogs/someInvalidId')
+      .set('Authorization', `bearer ${login.body.token}`)
       .expect(400)
 
     expect(result.body).toEqual({ error: 'malformatted id' })
@@ -201,9 +215,16 @@ test('update', async () => {
 describe('update and delete', () => {
   
   test('delete', async () => {
+
+    const login =  await api
+    .post('/api/login')
+    .send(user)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
       
     await api
         .delete(`/api/blogs/${remove._id}`)
+        .set('Authorization', `bearer ${login.body.token}`)
         .expect(204)
     
   });

@@ -23,7 +23,7 @@ const phonebookSchema = new mongoose.Schema({
   number: {
     type: String,
     minlength: 8,
-    equired: true,
+    required: true,
   },
 });
 
