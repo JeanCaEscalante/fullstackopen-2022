@@ -46,6 +46,17 @@ const initialBlogs = [
     }  
   ]
 
+const initialComments = [
+  {
+    content: "awesone article",
+    blog: null,
+  },
+  {
+    content: "a must read for every developer",
+    blog: null,
+  }
+];
+
 const nonExistingId = async () => {
     const blog = new Blogs({
         title1: "Teoria de Cuerdas",
@@ -71,4 +82,4 @@ const nonExistingId = async () => {
   }
 
 
-  module.exports = { initialBlogs, nonExistingId, blogsInDb, usersInDb }
+  module.exports = { initialBlogs, initialComments, nonExistingId, blogsInDb, usersInDb }
