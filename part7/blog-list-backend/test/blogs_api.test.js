@@ -11,7 +11,7 @@ const user = {
 }
 
 const login = async () => {
-   return await api
+ return await api
    .post('/api/login')
    .send(user)
    .expect(200)
@@ -67,11 +67,11 @@ test('a valid blogs can be added', async () => {
     author: "Albert H. A.",
     url: "https://www.npmjs.com/package/cors",
     likes: 4,
-    user: '634b0ebf37401f13e38ab34f'
+    user: '634e9d4f2b96a284b666bfff'
    }
 
    const user = await login();
-
+    console.log(user.body);
 let result =  await api
     .post('/api/blogs')
     .set('Authorization', `bearer ${user.body.token}`)

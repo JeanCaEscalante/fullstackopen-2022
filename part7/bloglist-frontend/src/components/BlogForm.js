@@ -37,24 +37,27 @@ const BlogsForm = (props) => {
   }
 
   return (
+    <>
+    <h2>Create New</h2>
     <form className='form' id='blog-form' onSubmit={addBlog} onReset={reset}>
       <div className="group">
-        <input {...title}/>
+       Title: <input {...title}/>
       </div>
       <div className="group">
-        <input {...author}/>
+       Author: <input {...author}/>
       </div>
       <div className="group">
-        <input {...url}/>
+       Url: <input {...url}/>
       </div>
       <div className="group">
-        <input {...likes}/>
+       Likes: <input {...likes}/>
       </div>
       <div>
         <button id='guardar' className='btn' type="submit">Save</button>
         <button type="reset">Reset</button>
       </div>
-    </form>);
+    </form>
+    </>);
 };
 
 export default connect(

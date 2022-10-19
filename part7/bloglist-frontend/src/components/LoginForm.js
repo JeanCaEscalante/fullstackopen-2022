@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { login } from '../reducers/userReducer';
+import { login } from '../reducers/loginReducer';
 
 import {useField} from '../hooks/useField'
 
