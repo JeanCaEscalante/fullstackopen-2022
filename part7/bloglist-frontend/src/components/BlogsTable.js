@@ -13,13 +13,13 @@ export default function BlogsTable({blogs}) {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ width: 300 }} aria-label="simple table">
+      <Table sx={{ width: '100%' }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="right">Title</TableCell>
-            <TableCell align="right">Author</TableCell>
-            <TableCell align="right">Url</TableCell>
-            <TableCell align="right">Likes</TableCell>
+            <TableCell align="center">Title</TableCell>
+            <TableCell align="center">Author</TableCell>
+            <TableCell align="center">Url</TableCell>
+            <TableCell align="center">Likes</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

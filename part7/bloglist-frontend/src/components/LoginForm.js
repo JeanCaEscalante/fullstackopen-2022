@@ -4,7 +4,8 @@ import { login } from '../reducers/loginReducer';
 
 import {useField} from '../hooks/useField'
 
-
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 const LoginForm = (props) => {
 
   const username = useField('text');
@@ -21,16 +22,32 @@ const LoginForm = (props) => {
   };
 
   return (
-    <form className='form' id='blog-form' onSubmit={addBlog}>
-      <div className="group">
-        <input {...username}/>
-      </div>
-      <div className="group">
-        <input {...password}/>
-      </div>
-      <div>
-        <button id='guardar' className='btn' type="submit">Save</button>
-      </div>
+    <form className='form-login' id='blog-form' onSubmit={addBlog}>
+      <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            {...username}
+            label="Username"
+          />
+      <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            {...password}
+            label="Password"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className='button-login'
+          >
+            Sign In
+          </Button>
     </form>);
 };
 

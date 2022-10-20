@@ -12,6 +12,14 @@ import LoginForm from './components/LoginForm';
 import UserPage from './components/UserPage';
 import Users from './components/Users';
 
+import blogService from './services/blogs';
+
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Avatar from '@mui/material/Avatar';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import './App.css';
+
 const App = ({user}) => {
 
   const dispatch = useDispatch();
@@ -21,17 +29,32 @@ const App = ({user}) => {
     dispatch(initUsers())
   }, [dispatch])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('user');
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      blogService.setToken(user.token);
+    };
+  }, []);
   return (
     <>
-            
       {
        !user ? (
-        <>
-          <LoginForm /> 
-        </>)
+        <Container maxWidth="xs">
+          <div className='paper'>
+            <Avatar sx={{ backgroundColor: '#9c27b0', margin: '8px'}}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+                <LoginForm /> 
+            </div>
+          </Container>)
        : (
           <Router>
           <NavBar />
+          <Container maxWidth="xl">
             <Routes>
               <Route path="/users" element={<Users />} />
               <Route path="/blogs" element={<Blogs />} />
@@ -39,11 +62,11 @@ const App = ({user}) => {
               <Route path="/users/:id" element={<UserPage />} />
               <Route path="/" element={<Blogs />} />
             </Routes>
+          </Container>
           </Router>   
         )
       } 
-    </>
-  )
+  </>)
 }
 
 const mapStateToProps = (state) => {

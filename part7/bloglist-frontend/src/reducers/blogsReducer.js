@@ -1,4 +1,6 @@
 import blogsService from '../services/blogs';
+import comments from '../services/comments';
+import commentsService from '../services/comments'
 
 export const initAll = () => {
    return async (dispatch) => {
@@ -40,6 +42,25 @@ export const toggleDeleteOf = (id) => {
     }
 }
 
+export const updateComments = (id) => {
+    return async (dispatch) => {
+       await blogsService.remove(id);
+       dispatch({
+            type: 'DELETE',
+            data: id
+        }) 
+    }
+}
+
+export const newComment = (newObject) => {
+    return async (dispatch) => {
+        const createComment = await commentsService.create(newObject);
+        dispatch({
+            type: 'NEW_COMMENT',
+            data: createComment
+        })
+    }
+}
 
 const blogsRedux = (state = [], action) => {
     switch (action.type) {
@@ -56,6 +77,11 @@ const blogsRedux = (state = [], action) => {
             )
         case 'DELETE':
             return state.filter((blog) => blog.id !== action.data)
+        case 'NEW_COMMENT':
+            const id  = action.data.blog;
+            const blog = state.find(a => a.id === id)
+            const newBlogs = {...blog, comments: [...blog.comments, action.data]}
+            return state.map(blog => blog.id !== id ? blog : newBlogs)
         default: return state
     }
 };

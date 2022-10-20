@@ -6,12 +6,14 @@ import BlogForm from './BlogForm';
 const Blogs = () => {
 const blogs = useSelector((state) => state.blogs)
   return (
-    <div>
-      <h2>blogs</h2>
-      <BlogForm />
-      <BlogsTable blogs={blogs} />
-    </div>
-  )
+      <div className="split-screen">
+        <div className="split-screen__half">
+          <BlogForm />
+        </div>
+        <div className="split-screen__half">
+          <BlogsTable blogs={blogs} />
+        </div>
+      </div>)
 }
 
 export default Blogs

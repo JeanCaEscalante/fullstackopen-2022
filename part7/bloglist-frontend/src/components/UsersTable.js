@@ -13,7 +13,7 @@ export default function UsersTable({users}) {
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ width: 300 }} aria-label="simple table">
+      <Table sx={{ width: '100%' }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Users</TableCell>

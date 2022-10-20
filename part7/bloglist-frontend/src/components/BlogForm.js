@@ -3,6 +3,9 @@ import {useField} from '../hooks/useField';
 import { connect } from 'react-redux';
 import { newBlog } from '../reducers/blogsReducer';
 
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+
 const BlogsForm = (props) => {
 
   const title = useField('text');
@@ -40,21 +43,41 @@ const BlogsForm = (props) => {
     <>
     <h2>Create New</h2>
     <form className='form' id='blog-form' onSubmit={addBlog} onReset={reset}>
-      <div className="group">
-       Title: <input {...title}/>
-      </div>
-      <div className="group">
-       Author: <input {...author}/>
-      </div>
-      <div className="group">
-       Url: <input {...url}/>
-      </div>
-      <div className="group">
-       Likes: <input {...likes}/>
-      </div>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            {...title}
+            label="Title"
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            {...author}
+            label="Author"
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            {...url}
+            label="URL"
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            {...likes}
+            label="Likes"
+          />
       <div>
-        <button id='guardar' className='btn' type="submit">Save</button>
-        <button type="reset">Reset</button>
+        <Button variant="contained" className='btn' color="success" type="submit">Save</Button>
+        <Button variant="contained" className='btn' type="reset">Reset</Button>
       </div>
     </form>
     </>);
