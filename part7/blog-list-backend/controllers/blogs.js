@@ -6,18 +6,11 @@ const User = require('../models/user')
 
 
 blogsRouter.get('/', async (request, response) => {
-   const blogs = await Blog.find({});
-   response.json(blogs); 
-});
+  const blogs = await Blog.find({})
+  .populate("user", { username: 1, name: 1 })
+  .populate("comments", { content: 1 });
 
-blogsRouter.get('/:id', async (request, response) => {
-    const blog = await Blog.findById(request.params.id);
-
-    if (blog) {
-      response.json(blog);
-    } else {
-      response.status(404).end();
-    }
+  response.json(blogs) 
 });
   
 blogsRouter.post('/', async (request, response, next) => {
