@@ -11,6 +11,7 @@ import NavBar from './components/NavBar';
 import LoginForm from './components/LoginForm';
 import UserPage from './components/UserPage';
 import Users from './components/Users';
+import Notification from './components/Notification';
 
 import blogService from './services/blogs';
 
@@ -41,6 +42,7 @@ const App = ({user}) => {
       {
        !user ? (
         <Container maxWidth="xs">
+          <Notification spacing={2} />
           <div className='paper'>
             <Avatar sx={{ backgroundColor: '#9c27b0', margin: '8px'}}>
               <LockOutlinedIcon />
@@ -54,6 +56,7 @@ const App = ({user}) => {
        : (
           <Router>
           <NavBar />
+          <Notification spacing={2} />
           <Container maxWidth="xl">
             <Routes>
               <Route path="/users" element={<Users />} />

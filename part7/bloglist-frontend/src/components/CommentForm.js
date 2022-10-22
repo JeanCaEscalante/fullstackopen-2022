@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux'
 import {useField} from '../hooks/useField';
 import { newComment } from '../reducers/blogsReducer';
 import TextField from '@mui/material/TextField';

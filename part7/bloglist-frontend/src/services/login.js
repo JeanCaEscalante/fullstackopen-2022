@@ -1,5 +1,4 @@
 import request from './config';
-
 const url = '/api/login'
 
 const login = async (credentials) => {

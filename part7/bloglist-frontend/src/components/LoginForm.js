@@ -1,24 +1,39 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { login } from '../reducers/loginReducer';
-
+import { useDispatch } from 'react-redux';
 import {useField} from '../hooks/useField'
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-const LoginForm = (props) => {
-
+const LoginForm = () => {
+  const dispatch = useDispatch()
   const username = useField('text');
   const password = useField('password');
 
 
-  const addBlog = (event) => {
+  const addBlog = async (event) => {
     event.preventDefault();
-    const user = {
-      username: username.value,
-      password: password.value
+
+    try {
+      const user = {
+        username: username.value,
+        password: password.value
+      }
+      
+      await dispatch(login(user))
+
+    } catch (error) {
+      const notification = {
+        type: 'notifications/error',
+        text: error.response.data.error,
+      }
+
+      console.log(error)
+      dispatch(notification)
+      setTimeout(() => {
+        dispatch({ type: 'notifications/timeout', text: '' })
+      }, 5000)
     }
-    props.login(user);
   };
 
   return (
@@ -51,7 +66,4 @@ const LoginForm = (props) => {
     </form>);
 };
 
-export default connect(
-  null, 
-  { login }
-)(LoginForm)
+export default LoginForm;

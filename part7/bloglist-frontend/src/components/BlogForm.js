@@ -26,7 +26,6 @@ const BlogsForm = (props) => {
 
     props.newBlog(Blog)
 
-    reset();
   };
 
   const reset = (event) => {
