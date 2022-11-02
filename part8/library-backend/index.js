@@ -87,7 +87,7 @@ const resolvers = {
         return await Book.find({genres:{ $in: [genre] }}).exec();
       }
         
-        return await Book.find({});
+        return await Book.find({}).populate("author",{name:1,born:1}).exec();
     },
     allAuthor: async  () => {
       
@@ -126,14 +126,16 @@ const resolvers = {
         
           const book = new Book({...args, author: (!currentAuthor.length) ? newAuthor._id : currentAuthor[0]._id})
         try {
-           await book.save()
+          
+          // await book.save().then(t => t.populate("author",{name:1,born:1}))
+          await book.save();
         } catch (error) {
-          throw new BookInputError(error.message, {
+          throw new UserInputError(error.message, {
             invalidArgs: args,
           })
         }
      
-      return book;
+      return await book.populate("author",{name:1,born:1})
     },
     editAuthor: async (root, args, context) => {
 

@@ -4,7 +4,7 @@ import { CREATE_BOOKS, ALL_BOOKS } from '../query'
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
-  const [published, setPublished] = useState(0)
+  const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
   const [addBook] = useMutation(CREATE_BOOKS,{
@@ -17,10 +17,11 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault()
 
+
     addBook({ variables:{title,published,author,genres}})
 
     setTitle('')
-    setPublished(0)
+    setPublished('')
     setAuthor('')
     setGenres([])
     setGenre('')
@@ -53,7 +54,7 @@ const NewBook = (props) => {
           <input
             type="number"
             value={published}
-            onChange={({ target }) => setPublished(target.value)}
+            onChange={({ target }) => setPublished(parseInt(target.value))}
           />
         </div>
         <div>
