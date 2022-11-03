@@ -46,6 +46,7 @@ const typeDefs = gql`
     authorCount: Int!,
     allBooks(author: String, genre: String): [Book!]!,
     allAuthor: [Author]!,
+    recommend: [Book]!
     me: User
   }
 
@@ -102,6 +103,15 @@ const resolvers = {
               id: author.id,
             }  
       })
+    },
+    recommend: async (root, args, context) => {
+      const currentUser = context.currentUser
+
+      if (!currentUser) {
+        throw new AuthenticationError("not authenticated")
+      }
+      const {favoriteGenre} = currentUser; 
+      return await Book.find({genres:{ $in: [favoriteGenre] }}).populate("author",{name:1,born:1}).exec();
     },
     me: (root, args, context) => {
       return context.currentUser

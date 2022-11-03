@@ -25,6 +25,19 @@ export const ALL_BOOKS = gql`
     }
   }
 `
+export const USER_RECOMMEND = gql`
+  query Recommend {
+    recommend {
+      title
+      published
+      author {
+        name
+        born
+      }
+      genres
+    }
+  }
+`
 export const CREATE_BOOKS = gql`
   mutation addBook($title: String!, $published: Int!, $author: String!, $genres: [String]) {
     addBook(title: $title, published: $published, author: $author, genres: $genres) {
