@@ -84,4 +84,8 @@ This part is about GraphQL, Facebook's alternative to REST API for communication
 - <a href="https://github.com/JeanCaEscalante/fullstackopen-2022/tree/master/part8/library-backend">library-backend</a> - The app source code.
 - <a href="https://github.com/JeanCaEscalante/fullstackopen-2022/tree/master/part8/library-frontend">library-frontend</a> - The app source code.
 
+<h3>Certificate of completion the course´s GraphQL part</h3>
+
+![This is an image](https://studies.cs.helsinki.fi/stats/api/certificate/fs-graphql/en/4506af17fdb0c6372df1010fb7279cbf)
+
 <a  href="https://github.com/JeanCaEscalante/fullstackopen-2022/tree/master/part8">View solutions folder</a>
