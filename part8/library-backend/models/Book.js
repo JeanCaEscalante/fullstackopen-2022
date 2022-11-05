@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
     unique: true,
     minlength: 2
   },
-  published: {
+  published: { 
     type: Number,
   },
   author: {

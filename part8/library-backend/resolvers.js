@@ -30,17 +30,7 @@ const resolvers = {
       },
       allAuthor: async  () => {
         
-        const authors = await Author.find({});
-        const books = await Book.find({});
-  
-        return authors.map((author) => {
-              return {
-                name: author.name,
-                bookCount: books.filter((book) => book.author.toString() === author.id).length,
-                born: author.born,
-                id: author.id,
-              }  
-        })
+        return  await Author.find({}).populate('bookCount');
       },
       recommend: async (root, args, context) => {
         const currentUser = context.currentUser
