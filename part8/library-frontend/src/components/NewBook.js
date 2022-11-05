@@ -8,7 +8,19 @@ const NewBook = (props) => {
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
   const [addBook] = useMutation(CREATE_BOOKS,{
-    refetchQueries: [ { query: ALL_BOOKS } ]
+    onError: (error) => {
+      props.setMessage(error.graphQLErrors[0].message)        
+    },
+    update: (store, response) => {
+      const dataInStore = store.readQuery({ query: ALL_BOOKS })
+      store.writeQuery({
+        query: ALL_BOOKS,
+        data: {
+          ...dataInStore,
+          allBooks: [ ...dataInStore.allBooks, response.data.addBook ]
+        }
+      })
+    }
   });
   if (!props.show) {
     return null

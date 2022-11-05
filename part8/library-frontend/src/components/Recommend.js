@@ -1,4 +1,3 @@
-
 import { useQuery } from "@apollo/client"
 import { USER_RECOMMEND } from "../query"
 const Recommend = (props) => {

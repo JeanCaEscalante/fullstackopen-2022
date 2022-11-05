@@ -11,32 +11,34 @@ export const ALL_AUTHORS = gql`
   }
 `
 
+const BOOK_DETAILS = gql`
+  fragment BookDetails on Book {
+    title
+    published
+    author {
+      name
+      born
+    }
+    genres
+    id
+  }
+`
+
 export const ALL_BOOKS = gql`
   query  {
     allBooks {
-      title
-      published
-      author {
-        name
-        born
-      }
-      genres
-      id
+      ...BookDetails
     }
   }
+  ${BOOK_DETAILS}
 `
 export const USER_RECOMMEND = gql`
   query Recommend {
     recommend {
-      title
-      published
-      author {
-        name
-        born
-      }
-      genres
+      ...BookDetails
     }
   }
+  ${BOOK_DETAILS}
 `
 export const CREATE_BOOKS = gql`
   mutation addBook($title: String!, $published: Int!, $author: String!, $genres: [String]) {

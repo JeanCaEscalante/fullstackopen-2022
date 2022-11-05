@@ -5,10 +5,11 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Recommend from './components/Recommend';
 import LoginForm from './components/LoginForm'
-
+import Notify from './components/notify'
 const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(null)
+  const [message, setMessage] = useState(null)
   const client = useApolloClient()
 
   useEffect(() => {
@@ -24,6 +25,10 @@ const App = () => {
     client.resetStore()
   }
 
+  setTimeout(() => {
+    setMessage(null)
+  }, 5000)
+
   return (
     <div>
       <div>
@@ -38,11 +43,12 @@ const App = () => {
                   : <button onClick={() => setPage('login')}>Login</button>
         }
       </div>
-
+      
+      <Notify message={message}/>
       <Authors show={page === 'authors'} />
       <Books show={page === 'books'} />
-      <LoginForm show={page === 'login'} setToken={setToken}/>
-      <NewBook show={page === 'add'} />
+      <LoginForm show={page === 'login'} setToken={setToken} setMessage={setMessage}/>
+      <NewBook show={page === 'add'} setMessage={setMessage}/>
       <Recommend show={page === 'recommend'} />
     </div>
   )
