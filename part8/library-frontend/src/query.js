@@ -40,6 +40,17 @@ export const USER_RECOMMEND = gql`
   }
   ${BOOK_DETAILS}
 `
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      ...BookDetails
+    }
+  }
+  
+  ${BOOK_DETAILS}
+`
+
 export const CREATE_BOOKS = gql`
   mutation addBook($title: String!, $published: Int!, $author: String!, $genres: [String]) {
     addBook(title: $title, published: $published, author: $author, genres: $genres) {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient,  useSubscription } from '@apollo/client'
+import { ALL_BOOKS, BOOK_ADDED } from './query'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
@@ -11,6 +12,19 @@ const App = () => {
   const [token, setToken] = useState(null)
   const [message, setMessage] = useState(null)
   const client = useApolloClient()
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded
+      setMessage(`${addedBook.title} added`)
+
+      client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
+        return {
+          allBooks: allBooks.concat(addedBook),
+        }
+      })
+    }
+  })
 
   useEffect(() => {
     const token = localStorage.getItem('token')
